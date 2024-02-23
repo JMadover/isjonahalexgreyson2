@@ -127,7 +127,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
                 double convey = gamepad1.left_trigger;
 
 
-                //hopefully this will be working driver lock especiall if we are working of a camera
+                //hopefully this will be working driver lock especially if we are working of a camera
+                //uses x and y of sticks and robot yaw rotation in a rotational matrix to figure out what part of the robot is facing "forward"
                 double drive = ogturn*Math.cos(robotyaw)-ogdrive*Math.sin(robotyaw);
                 double turn = ogturn*Math.cos(robotyaw)+ogdrive*Math.sin(robotyaw);
 

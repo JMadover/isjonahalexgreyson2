@@ -103,6 +103,7 @@ public class DriveCode {
                 // - This uses basic math to combine motions and is easier to drive straight.
                 double drive = -gamepad1.left_stick_y;
                 double turn  =  gamepad1.right_stick_x;
+                //TODO potentially set power instead of using triggger value
                 double convey = gamepad1.left_trigger;
                 leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
                 rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
@@ -121,6 +122,7 @@ public class DriveCode {
                 belt.setPower(beltPower);
 
                 // Show the elapsed game time and wheel power.
+                telemetry.addData("lets hope this works", beltPower);
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
                 telemetry.update();

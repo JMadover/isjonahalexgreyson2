@@ -40,15 +40,20 @@
      */
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-public class DriveCode {
+
+    public class DriveCode {
 
     @TeleOp(name="simple tank drive", group="Linear OpMode")
     public class BasicOpMode_Linear extends LinearOpMode {
@@ -60,6 +65,7 @@ public class DriveCode {
         private DcMotor leftBackDrive = null;
         private DcMotor rightBackDrive = null;
         private DcMotor belt = null;
+        IMU imu;
 
         @Override
         public void runOpMode() {
@@ -74,6 +80,14 @@ public class DriveCode {
             leftBackDrive = hardwareMap.get(DcMotor.class, "left_drive");
             rightBackDrive = hardwareMap.get(DcMotor.class, "right_drive");
             belt = hardwareMap.get(DcMotor.class, "belt");
+            imu = hardwareMap.get(IMU.class, "imu");
+
+            //IMU directions
+            RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+            RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.UP;
+
+            RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+            imu.initialize(new IMU.Parameters(orientationOnRobot));
 
             // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
             // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -96,15 +110,28 @@ public class DriveCode {
                 double rightPower;
                 double beltPower;
 
+
+                //init IMU
+                YawPitchRollAngles robotOrientation;
+                robotOrientation = imu.getRobotYawPitchRollAngles();
+                double robotyaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+
                 // Choose to drive using either Tank Mode, or POV Mode
                 // Comment out the method that's not used.  The default below is POV.
 
                 // POV Mode uses left stick to go forward, and right stick to turn.
                 // - This uses basic math to combine motions and is easier to drive straight.
-                double drive = -gamepad1.left_stick_y;
-                double turn  =  gamepad1.right_stick_x;
+                double ogdrive = -gamepad1.left_stick_y;
+                double ogturn  =  gamepad1.right_stick_x;
                 //TODO potentially set power instead of using triggger value
                 double convey = gamepad1.left_trigger;
+
+
+                //hopefully this will be working driver lock especiall if we are working of a camera
+                double drive = ogturn*Math.cos(robotyaw)-ogdrive*Math.sin(robotyaw);
+                double turn = ogturn*Math.cos(robotyaw)+ogdrive*Math.sin(robotyaw);
+
+
                 leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
                 rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
                 beltPower   = Range.clip(convey, -1.0, 1.0) ;

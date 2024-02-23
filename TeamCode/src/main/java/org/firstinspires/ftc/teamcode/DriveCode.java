@@ -123,8 +123,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
                 // - This uses basic math to combine motions and is easier to drive straight.
                 double ogdrive = -gamepad1.left_stick_y;
                 double ogturn  =  gamepad1.right_stick_x;
-                //TODO potentially set power instead of using triggger value
-                double convey = gamepad1.left_trigger;
+                double convey = 0.75;
 
 
                 //hopefully this will be working driver lock especially if we are working of a camera

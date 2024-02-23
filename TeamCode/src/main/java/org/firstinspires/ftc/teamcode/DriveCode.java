@@ -59,6 +59,7 @@ public class DriveCode {
         private DcMotor rightFrontDrive = null;
         private DcMotor leftBackDrive = null;
         private DcMotor rightBackDrive = null;
+        private DcMotor belt = null;
 
         @Override
         public void runOpMode() {
@@ -72,6 +73,7 @@ public class DriveCode {
             rightFrontDrive = hardwareMap.get(DcMotor.class, "right_drive");
             leftBackDrive = hardwareMap.get(DcMotor.class, "left_drive");
             rightBackDrive = hardwareMap.get(DcMotor.class, "right_drive");
+            belt = hardwareMap.get(DcMotor.class, "belt");
 
             // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
             // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -80,6 +82,7 @@ public class DriveCode {
             rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+            belt.setDirection(DcMotor.Direction.FORWARD);
 
             // Wait for the game to start (driver presses PLAY)
             waitForStart();
@@ -91,6 +94,7 @@ public class DriveCode {
                 // Setup a variable for each drive wheel to save power level for telemetry
                 double leftPower;
                 double rightPower;
+                double beltPower;
 
                 // Choose to drive using either Tank Mode, or POV Mode
                 // Comment out the method that's not used.  The default below is POV.
@@ -99,8 +103,10 @@ public class DriveCode {
                 // - This uses basic math to combine motions and is easier to drive straight.
                 double drive = -gamepad1.left_stick_y;
                 double turn  =  gamepad1.right_stick_x;
+                double convey = gamepad1.left_trigger;
                 leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
                 rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+                beltPower   = Range.clip(convey, -1.0, 1.0) ;
 
                 // Tank Mode uses one stick to control each wheel.
                 // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -112,6 +118,7 @@ public class DriveCode {
                 rightFrontDrive.setPower(rightPower);
                 leftBackDrive.setPower(leftPower);
                 rightBackDrive.setPower(rightPower);
+                belt.setPower(beltPower);
 
                 // Show the elapsed game time and wheel power.
                 telemetry.addData("Status", "Run Time: " + runtime.toString());

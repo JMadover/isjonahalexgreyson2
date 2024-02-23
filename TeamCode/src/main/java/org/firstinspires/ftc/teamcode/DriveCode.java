@@ -75,10 +75,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
             // Initialize the hardware variables. Note that the strings used here as parameters
             // to 'get' must correspond to the names assigned during the robot configuration
             // step (using the FTC Robot Controller app on the phone).
-            leftFrontDrive = hardwareMap.get(DcMotor.class, "left_drive");
-            rightFrontDrive = hardwareMap.get(DcMotor.class, "right_drive");
-            leftBackDrive = hardwareMap.get(DcMotor.class, "left_drive");
-            rightBackDrive = hardwareMap.get(DcMotor.class, "right_drive");
+            leftFrontDrive = hardwareMap.get(DcMotor.class, "leftfront_drive");
+            rightFrontDrive = hardwareMap.get(DcMotor.class, "rightfront_drive");
+            leftBackDrive = hardwareMap.get(DcMotor.class, "leftback_drive");
+            rightBackDrive = hardwareMap.get(DcMotor.class, "rightback_drive");
             belt = hardwareMap.get(DcMotor.class, "belt");
             imu = hardwareMap.get(IMU.class, "imu");
 
@@ -111,7 +111,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
                 double beltPower;
 
 
-                //init IMU
+                //init IMU and get yaw
                 YawPitchRollAngles robotOrientation;
                 robotOrientation = imu.getRobotYawPitchRollAngles();
                 double robotyaw = robotOrientation.getYaw(AngleUnit.DEGREES);

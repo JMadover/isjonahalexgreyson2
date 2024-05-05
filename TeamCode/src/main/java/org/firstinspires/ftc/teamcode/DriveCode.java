@@ -53,10 +53,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 
-    public class DriveCode {
 
-    @TeleOp(name="simple tank drive", group="Linear OpMode")
-    public class BasicOpMode_Linear extends LinearOpMode {
+
+    @TeleOp(name="i hope this works", group="Linear OpMode")
+    public class DriveCode extends LinearOpMode {
 
         // Declare OpMode members.
         private ElapsedTime runtime = new ElapsedTime();
@@ -65,7 +65,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
         private DcMotor leftBackDrive = null;
         private DcMotor rightBackDrive = null;
         private DcMotor belt = null;
-        IMU imu;
+        private IMU imu;
 
         @Override
         public void runOpMode() {
@@ -79,7 +79,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
             rightFrontDrive = hardwareMap.get(DcMotor.class, "rightfront_drive");
             leftBackDrive = hardwareMap.get(DcMotor.class, "leftback_drive");
             rightBackDrive = hardwareMap.get(DcMotor.class, "rightback_drive");
-            belt = hardwareMap.get(DcMotor.class, "belt");
+            //belt = hardwareMap.get(DcMotor.class, "belt");
             imu = hardwareMap.get(IMU.class, "imu");
 
             //IMU directions
@@ -96,7 +96,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
             rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-            belt.setDirection(DcMotor.Direction.FORWARD);
+           //belt.setDirection(DcMotor.Direction.FORWARD);
 
             // Wait for the game to start (driver presses PLAY)
             waitForStart();
@@ -108,7 +108,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
                 // Setup a variable for each drive wheel to save power level for telemetry
                 double leftPower;
                 double rightPower;
-                double beltPower;
+                //double beltPower;
 
 
                 //init IMU and get yaw
@@ -121,20 +121,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
                 // POV Mode uses left stick to go forward, and right stick to turn.
                 // - This uses basic math to combine motions and is easier to drive straight.
-                double ogdrive = -gamepad1.left_stick_y;
-                double ogturn  =  gamepad1.right_stick_x;
-                double convey = 0.75;
+                double drive = -gamepad1.left_stick_y;
+                double turn  =  gamepad1.right_stick_x;
+                //double convey = 0.75;
 
 
                 //hopefully this will be working driver lock especially if we are working of a camera
                 //uses x and y of sticks and robot yaw rotation in a rotational matrix to figure out what part of the robot is facing "forward"
-                double drive = ogturn*Math.cos(robotyaw)-ogdrive*Math.sin(robotyaw);
-                double turn = ogturn*Math.cos(robotyaw)+ogdrive*Math.sin(robotyaw);
+                //double drive = ogturn*Math.cos(robotyaw)-ogdrive*Math.sin(robotyaw);
+                //double turn = ogturn*Math.cos(robotyaw)+ogdrive*Math.sin(robotyaw);
 
 
                 leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
                 rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-                beltPower   = Range.clip(convey, -1.0, 1.0) ;
+                //beltPower   = Range.clip(convey, -1.0, 1.0) ;
 
                 // Tank Mode uses one stick to control each wheel.
                 // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -146,10 +146,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
                 rightFrontDrive.setPower(rightPower);
                 leftBackDrive.setPower(leftPower);
                 rightBackDrive.setPower(rightPower);
-                belt.setPower(beltPower);
+                //belt.setPower(beltPower);
 
                 // Show the elapsed game time and wheel power.
-                telemetry.addData("lets hope this works", beltPower);
+                //telemetry.addData("lets hope this works", beltPower);
                 telemetry.addData("Status", "Run Time: " + runtime.toString());
                 telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
                 telemetry.update();
@@ -157,4 +157,3 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
         }
     }
 
-}
